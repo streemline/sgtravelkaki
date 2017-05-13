@@ -1,0 +1,351 @@
+[{
+    "BusStopCode": "01012",
+    "RoadName": "Victoria St",
+    "Description": "Hotel Grand Pacific",
+    "Latitude": 1.29684825487647,
+    "Longitude": 103.85253591654006
+  },
+  {
+    "BusStopCode": "01013",
+    "RoadName": "Victoria St",
+    "Description": "St. Joseph's Ch",
+    "Latitude": 1.29770970610083,
+    "Longitude": 103.8532247463225
+  },
+  {
+    "BusStopCode": "01019",
+    "RoadName": "Victoria St",
+    "Description": "Bras Basah Cplx",
+    "Latitude": 1.29698951191332,
+    "Longitude": 103.85302201172507
+  },
+  {
+    "BusStopCode": "01029",
+    "RoadName": "Nth Bridge Rd",
+    "Description": "Cosmic Insurance Bldg",
+    "Latitude": 1.2966729849642,
+    "Longitude": 103.85441422464267
+  },
+  {
+    "BusStopCode": "01039",
+    "RoadName": "Nth Bridge Rd",
+    "Description": "Nth Bridge Commercial Cplx",
+    "Latitude": 1.29820784139683,
+    "Longitude": 103.85549139837407
+  },
+  {
+    "BusStopCode": "01059",
+    "RoadName": "Victoria St",
+    "Description": "Bugis Stn",
+    "Latitude": 1.30075679526626,
+    "Longitude": 103.85611040457583
+  },
+  {
+    "BusStopCode": "01109",
+    "RoadName": "Queen St",
+    "Description": "Queen St Ter",
+    "Latitude": 1.30358577565355,
+    "Longitude": 103.85650372998224
+  },
+  {
+    "BusStopCode": "01112",
+    "RoadName": "Victoria St",
+    "Description": "Opp Bugis Junction",
+    "Latitude": 1.30015494414022,
+    "Longitude": 103.8552332285516
+  },
+  {
+    "BusStopCode": "01113",
+    "RoadName": "Victoria St",
+    "Description": "Bugis Stn",
+    "Latitude": 1.30117297541547,
+    "Longitude": 103.8561140106393
+  },
+  {
+    "BusStopCode": "01119",
+    "RoadName": "Victoria St",
+    "Description": "Bugis Junction",
+    "Latitude": 1.2996041093804,
+    "Longitude": 103.85512934079571
+  },
+  {
+    "BusStopCode": "01121",
+    "RoadName": "Victoria St",
+    "Description": "Stamford Pr Sch",
+    "Latitude": 1.30393809691048,
+    "Longitude": 103.85867999243207
+  },
+  {
+    "BusStopCode": "01129",
+    "RoadName": "Victoria St",
+    "Description": "Opp Stamford Pr Sch",
+    "Latitude": 1.30350269187301,
+    "Longitude": 103.85864530718491
+  },
+  {
+    "BusStopCode": "01139",
+    "RoadName": "Nth Bridge Rd",
+    "Description": "Parkview Sq",
+    "Latitude": 1.30033057855542,
+    "Longitude": 103.85716080665901
+  },
+  {
+    "BusStopCode": "01211",
+    "RoadName": "Victoria St",
+    "Description": "Opp Blk 461",
+    "Latitude": 1.30551803523268,
+    "Longitude": 103.8605449516032
+  },
+  {
+    "BusStopCode": "01219",
+    "RoadName": "Victoria St",
+    "Description": "Blk 461",
+    "Latitude": 1.30526598535719,
+    "Longitude": 103.86072019914616
+  },
+  {
+    "BusStopCode": "01229",
+    "RoadName": "Nth Bridge Rd",
+    "Description": "Bef Sultan Mque",
+    "Latitude": 1.30337552638813,
+    "Longitude": 103.85963089198265
+  },
+  {
+    "BusStopCode": "01231",
+    "RoadName": "Jln Sultan",
+    "Description": "Opp Textile Ctr",
+    "Latitude": 1.3032499999752,
+    "Longitude": 103.8610830559663
+  },
+  {
+    "BusStopCode": "01239",
+    "RoadName": "Jln Sultan",
+    "Description": "Sultan Plaza",
+    "Latitude": 1.30291236608351,
+    "Longitude": 103.86161817611134
+  },
+  {
+    "BusStopCode": "01311",
+    "RoadName": "Kallang Rd",
+    "Description": "Lavender Stn Exit B",
+    "Latitude": 1.3070916463394,
+    "Longitude": 103.86219695240973
+  },
+  {
+    "BusStopCode": "01319",
+    "RoadName": "Kallang Rd",
+    "Description": "Lavender Stn Exit A/ICA",
+    "Latitude": 1.30757426746418,
+    "Longitude": 103.86325596123476
+  },
+  {
+    "BusStopCode": "01329",
+    "RoadName": "Nth Bridge Rd",
+    "Description": "Blk 8",
+    "Latitude": 1.30495670239172,
+    "Longitude": 103.86363028484124
+  },
+  {
+    "BusStopCode": "01339",
+    "RoadName": "Crawford St",
+    "Description": "Bef Crawford Bridge",
+    "Latitude": 1.30774601733202,
+    "Longitude": 103.8642627465441
+  },
+  {
+    "BusStopCode": "01341",
+    "RoadName": "Crawford St",
+    "Description": "Southbank",
+    "Latitude": 1.30647555600578,
+    "Longitude": 103.86452527798744
+  },
+  {
+    "BusStopCode": "01349",
+    "RoadName": "Crawford St",
+    "Description": "Opp Blk 4",
+    "Latitude": 1.30568635716829,
+    "Longitude": 103.86543994417883
+  },
+  {
+    "BusStopCode": "01411",
+    "RoadName": "Beach Rd",
+    "Description": "Opp St. John HQ",
+    "Latitude": 1.30211332865049,
+    "Longitude": 103.86295598167331
+  },
+  {
+    "BusStopCode": "01419",
+    "RoadName": "Beach Rd",
+    "Description": "St. John HQ",
+    "Latitude": 1.3020199999911,
+    "Longitude": 103.86326333301203
+  },
+  {
+    "BusStopCode": "01421",
+    "RoadName": "Beach Rd",
+    "Description": "Opp Golden Mile Cplx",
+    "Latitude": 1.30338444400173,
+    "Longitude": 103.86483888898641
+  },
+  {
+    "BusStopCode": "01429",
+    "RoadName": "Beach Rd",
+    "Description": "Golden Mile Cplx",
+    "Latitude": 1.3032136089394,
+    "Longitude": 103.86501584807763
+  },
+  {
+    "BusStopCode": "01511",
+    "RoadName": "Beach Rd",
+    "Description": "Opp The Gateway",
+    "Latitude": 1.29919826103807,
+    "Longitude": 103.85864518302436
+  },
+  {
+    "BusStopCode": "01519",
+    "RoadName": "Beach Rd",
+    "Description": "The Gateway",
+    "Latitude": 1.29907492488417,
+    "Longitude": 103.8589102973441
+  },
+  {
+    "BusStopCode": "01521",
+    "RoadName": "Beach Rd",
+    "Description": "Opp Plaza Parkroyal",
+    "Latitude": 1.30088304437602,
+    "Longitude": 103.86066098182194
+  },
+  {
+    "BusStopCode": "01529",
+    "RoadName": "Beach Rd",
+    "Description": "Plaza Parkroyal",
+    "Latitude": 1.30041667676526,
+    "Longitude": 103.86044115259938
+  },
+  {
+    "BusStopCode": "01541",
+    "RoadName": "Rochor Rd",
+    "Description": "Bugis Stn Exit D",
+    "Latitude": 1.29886465442254,
+    "Longitude": 103.85734583628746
+  },
+  {
+    "BusStopCode": "01549",
+    "RoadName": "Ophir Rd",
+    "Description": "Near Bali Lane",
+    "Latitude": 1.30069868861162,
+    "Longitude": 103.85873120467069
+  },
+  {
+    "BusStopCode": "01559",
+    "RoadName": "Ophir Rd",
+    "Description": "Landmark Village Hotel",
+    "Latitude": 1.30168731070562,
+    "Longitude": 103.85752923961614
+  },
+  {
+    "BusStopCode": "01611",
+    "RoadName": "Beach Rd",
+    "Description": "Raffles Hotel",
+    "Latitude": 1.29529638630566,
+    "Longitude": 103.85539039969967
+  },
+  {
+    "BusStopCode": "01619",
+    "RoadName": "Beach Rd",
+    "Description": "Opp Raffles Hotel",
+    "Latitude": 1.29428694178246,
+    "Longitude": 103.85503809424233
+  },
+  {
+    "BusStopCode": "01621",
+    "RoadName": "Beach Rd",
+    "Description": "Opp Shaw Twrs",
+    "Latitude": 1.29695888888745,
+    "Longitude": 103.85655611109846
+  },
+  {
+    "BusStopCode": "01629",
+    "RoadName": "Beach Rd",
+    "Description": "Shaw Twrs",
+    "Latitude": 1.29695972219958,
+    "Longitude": 103.85686527780177
+  },
+  {
+    "BusStopCode": "01631",
+    "RoadName": "Middle Rd",
+    "Description": "Aft Beach Rd",
+    "Latitude": 1.29693614589482,
+    "Longitude": 103.85580555528077
+  },
+  {
+    "BusStopCode": "01639",
+    "RoadName": "Middle Rd",
+    "Description": "Bef Beach Rd",
+    "Latitude": 1.29738750001468,
+    "Longitude": 103.85557583297624
+  },
+  {
+    "BusStopCode": "02029",
+    "RoadName": "Connaught Dr",
+    "Description": "Opp S'pore Cricket Club",
+    "Latitude": 1.28879015142476,
+    "Longitude": 103.85293318066766
+  },
+  {
+    "BusStopCode": "02049",
+    "RoadName": "Bras Basah Rd",
+    "Description": "Raffles Hotel",
+    "Latitude": 1.29452091230981,
+    "Longitude": 103.85402155505173
+  },
+  {
+    "BusStopCode": "02051",
+    "RoadName": "Raffles Ave",
+    "Description": "Seating Gallery",
+    "Latitude": 1.2895030556082,
+    "Longitude": 103.85903388899317
+  },
+  {
+    "BusStopCode": "02061",
+    "RoadName": "Raffles Ave",
+    "Description": "The Esplanade",
+    "Latitude": 1.2899638888957,
+    "Longitude": 103.85640388886262
+  },
+  {
+    "BusStopCode": "02089",
+    "RoadName": "Raffles Blvd",
+    "Description": "Pan Pacific Hotel",
+    "Latitude": 1.29152694444975,
+    "Longitude": 103.8592061110504
+  },
+  {
+    "BusStopCode": "02099",
+    "RoadName": "Raffles Blvd",
+    "Description": "Marina Ctr Ter",
+    "Latitude": 1.29101661693418,
+    "Longitude": 103.86255772172497
+  },
+  {
+    "BusStopCode": "02101",
+    "RoadName": "Raffles Ave",
+    "Description": "Bef Temasek Ave",
+    "Latitude": 1.28939197625331,
+    "Longitude": 103.8618029276249
+  },
+  {
+    "BusStopCode": "02111",
+    "RoadName": "Esplanade Dr",
+    "Description": "Esplanade Bridge",
+    "Latitude": 1.29095592348389,
+    "Longitude": 103.85453419435228
+  },
+  {
+    "BusStopCode": "02119",
+    "RoadName": "Nicoll Highway",
+    "Description": "Opp War Memorial Pk",
+    "Latitude": 1.29184407356581,
+    "Longitude": 103.85534334305085
+  }
+]
