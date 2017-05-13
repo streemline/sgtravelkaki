@@ -1,53 +1,63 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from api.BusApi import BusApi
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(bot, update):
+    """message send for Command: start"""
     update.message.reply_text('Hi!')
 
 
-def help(bot, update):
+def get_help(bot, update):
+    """message send for Command: help"""
     update.message.reply_text('Help!')
 
-def nearby(bot,update):
-    bus_api = BusApi()
-    msg = bus_api.get_bus_arrival_msg('67329')
-    update.message.reply_text(msg)
+def bus_stop(bot, update):
+    """message send for Command: busstop"""
+    split_arr = update.message.text.split()
+    if len(split_arr) == 2:
+        bus_api = BusApi()
+        msg = bus_api.get_bus_arrival_msg(split_arr[1])
+        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
+    else:
+        update.message.reply_text("Please provie me with the bus stop number.\nE.g. /busstop 67329")
 
 def echo(bot, update):
+    """message send for user input"""
     update.message.reply_text(update.message.text)
 
 
-def error(bot, update, error):
-    logger.warn('Update "%s" caused error "%s"' % (update, error))
+def handle_error(bot, update, error):
+    """message send for when error occurs"""
+    LOGGER.warn('Update "%s" caused error "%s"' % (update, error))
 
 
 def main():
+    """Main def"""
     # Create the EventHandler and pass it your bot's token.
-    updater = Updater("")
+    updater = Updater("BOT-TOKEN")
 
     # Get the dispatcher to register handlers
-    dp = updater.dispatcher
+    dispatcher = updater.dispatcher
 
     # on different commands - answer in Telegram
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("nearby", nearby))
-    dp.add_handler(CommandHandler("help", help))
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CommandHandler("busstop", bus_stop))
+    dispatcher.add_handler(CommandHandler("help", get_help))
 
     # on noncommand i.e message - echo the message on Telegram
-    dp.add_handler(MessageHandler(Filters.text, echo))
+    dispatcher.add_handler(MessageHandler(Filters.text, echo))
 
     # log all errors
-    dp.add_error_handler(error)
+    dispatcher.add_error_handler(handle_error)
 
     # Start the Bot
     updater.start_polling()
