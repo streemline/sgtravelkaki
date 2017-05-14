@@ -23,12 +23,24 @@ def get_help(bot, update):
 def bus_stop(bot, update):
     """message send for Command: busstop"""
     split_arr = update.message.text.split()
+    bus_api = BusApi()
     if len(split_arr) == 2:
-        bus_api = BusApi()
         msg = bus_api.get_bus_arrival_msg(split_arr[1])
         bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
+    elif len(split_arr) == 3:
+        msg = bus_api.get_bus_arrival_msg(split_arr[1], split_arr[2])
+        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
     else:
-        update.message.reply_text("Please provie me with the bus stop number.\nE.g. /busstop 67329")
+        msg = 'Please provide me with the bus stop number.'
+        msg += '\nFormat - /busstop <bus stop no> <bus no>(optional)'
+        msg += '\nExample - /busstop 67329 or /busstop 67329 163'
+        bot.send_message(chat_id=update.message.chat.id, text=msg)
+
+def nearby_bus_stop(bot, update):
+    update.message.reply_text('nearby')
+
+def bus_info(bot, update):
+    update.message.reply_text('bus info')
 
 def echo(bot, update):
     """message send for user input"""
@@ -43,7 +55,7 @@ def handle_error(bot, update, error):
 def main():
     """Main def"""
     # Create the EventHandler and pass it your bot's token.
-    updater = Updater("BOT-TOKEN")
+    updater = Updater("")
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
@@ -51,7 +63,10 @@ def main():
     # on different commands - answer in Telegram
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("busstop", bus_stop))
+    dispatcher.add_handler(CommandHandler("nearby", nearby_bus_stop))
+    dispatcher.add_handler(CommandHandler("businfo", bus_info))
     dispatcher.add_handler(CommandHandler("help", get_help))
+    dispatcher.add_handler(CommandHandler("restart", start))
 
     # on noncommand i.e message - echo the message on Telegram
     dispatcher.add_handler(MessageHandler(Filters.text, echo))
