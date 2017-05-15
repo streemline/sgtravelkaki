@@ -127,4 +127,3 @@ class Bus(object):
             for bus_stop in data:
                 if bus_stop['no'] == bus_stop_id:
                     return bus_stop
-    
