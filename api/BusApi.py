@@ -23,10 +23,10 @@ class BusApi(object):
         """Return formatted bus arrival message"""
         res = self.get_bus_arrival_json(bus_stop_id)
         got_bus_services = self.check_for_bus_service(res)
-        msg = '*' + res.get('BusStopID') + '* - '
+        msg = '🚏 *' + res.get('BusStopID') + '* - '
         if got_bus_services:
             bus_detail = self.get_bus_stop_detail(bus_stop_id)
-            msg += bus_detail['name'] + "🚏\n\n"
+            msg += bus_detail['name'] + "\n\n"
             if bus_no == '':
                 for service in res.get('Services'):
                     msg += self.format_bus_arrival_info(service)
@@ -36,7 +36,9 @@ class BusApi(object):
                         msg += self.format_bus_arrival_info(service)
                         break
         else:
-            msg += 'No bus services found.'
+            msg += 'No bus services found. \n\n'
+        formatted_now = 'Updated on ' + datetime.now().strftime("%d %b %Y %I:%M:%S %p")
+        msg += formatted_now
         return msg
 
     def check_for_bus_service(self, res):
@@ -65,7 +67,7 @@ class BusApi(object):
 
     def format_bus_arrival_info(self, service):
         """Return formatted bus arrival info"""
-        msg = '🚍*' + service.get('ServiceNo') + '*\n'
+        msg = '🚍 *' + service.get('ServiceNo') + '*\n'
         now = datetime.now()
         nxt_bus_arrival_str = service.get('NextBus').get('EstimatedArrival')
         sub_bus_arrival_str = service.get('SubsequentBus').get('EstimatedArrival')
@@ -104,11 +106,11 @@ class BusApi(object):
 
     def check_bus_load(self, load):
         """Check how pack is the bus"""
-        load_emoji = "😠"
+        load_emoji = " 😠"
         if load == 'Seats Available':
-            load_emoji = "😁"
+            load_emoji = " 😁"
         elif load == 'Standing Available':
-            load_emoji = "😓"
+            load_emoji = " 😓"
         return load_emoji
 
     def check_bus_feature(self, feature):
@@ -125,4 +127,3 @@ class BusApi(object):
             for bus_stop in data:
                 if bus_stop['no'] == bus_stop_id:
                     return bus_stop
-    
