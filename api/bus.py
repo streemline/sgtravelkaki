@@ -8,7 +8,7 @@ from dateutil.parser import parse
 
 API_KEY = ""
 
-class BusApi(object):
+class Bus(object):
     """Bus arrival API"""
     def get_bus_arrival_json(self, bus_stop_id):
         """Call http get request and return JSON data"""
@@ -25,8 +25,8 @@ class BusApi(object):
         got_bus_services = self.check_for_bus_service(res)
         msg = '🚏 *' + res.get('BusStopID') + '* - '
         if got_bus_services:
-            bus_detail = self.get_bus_stop_detail(bus_stop_id)
-            msg += bus_detail['name'] + "\n\n"
+            bus_stop_detail = self.get_bus_stop_detail(bus_stop_id)
+            msg += bus_stop_detail['name'] + "\n\n"
             if bus_no == '':
                 for service in res.get('Services'):
                     msg += self.format_bus_arrival_info(service)
@@ -37,7 +37,7 @@ class BusApi(object):
                         break
         else:
             msg += 'No bus services found. \n\n'
-        formatted_now = 'Updated on ' + datetime.now().strftime("%d %b %Y %I:%M:%S %p")
+        formatted_now = datetime.now().strftime("%d %b %Y %I:%M:%S %p")
         msg += formatted_now
         return msg
 
@@ -86,8 +86,8 @@ class BusApi(object):
         if sub_bus_arrival_str != "":
             mins = self.get_date_diff_min(now, sub_bus_arrival_str)
             mins_str = self.get_min_diff_str(mins)
-            bus_load = service.get('NextBus').get('Load')
-            bus_feature = service.get('NextBus').get('Feature')
+            bus_load = service.get('SubsequentBus').get('Load')
+            bus_feature = service.get('SubsequentBus').get('Feature')
             msg += 'Sub: ' + mins_str + self.check_bus_load(bus_load)
             msg += self.check_bus_feature(bus_feature) + '\n'
         else:
@@ -96,8 +96,8 @@ class BusApi(object):
         if sub_bus_arrival_str3 != "":
             mins = self.get_date_diff_min(now, sub_bus_arrival_str3)
             mins_str = self.get_min_diff_str(mins)
-            bus_load = service.get('NextBus').get('Load')
-            bus_feature = service.get('NextBus').get('Feature')
+            bus_load = service.get('SubsequentBus3').get('Load')
+            bus_feature = service.get('SubsequentBus3').get('Feature')
             msg += 'After: ' + mins_str + self.check_bus_load(bus_load)
             msg += self.check_bus_feature(bus_feature) + '\n\n'
         else:
@@ -127,3 +127,4 @@ class BusApi(object):
             for bus_stop in data:
                 if bus_stop['no'] == bus_stop_id:
                     return bus_stop
+    
