@@ -1,12 +1,15 @@
+# -*- coding: utf-8 -*-
 """ Bus API Class """
 
 from datetime import datetime
 import time
 import json
 import requests
+from api.emojicode import EmojiCode
 from dateutil.parser import parse
 
 API_KEY = ""
+EMOJICODE = EmojiCode()
 
 class Bus(object):
     """Bus arrival API"""
@@ -23,7 +26,7 @@ class Bus(object):
         """Return formatted bus arrival message"""
         res = self.get_bus_arrival_json(bus_stop_id)
         got_bus_services = self.check_for_bus_service(res)
-        msg = '🚏 *' + res.get('BusStopID') + '* - '
+        msg = EMOJICODE.busstop() + ' *' + res.get('BusStopID') + '* - '
         if got_bus_services:
             bus_stop_detail = self.get_bus_stop_detail(bus_stop_id)
             msg += bus_stop_detail['name'] + "\n\n"
@@ -67,7 +70,7 @@ class Bus(object):
 
     def format_bus_arrival_info(self, service):
         """Return formatted bus arrival info"""
-        msg = '🚍 *' + service.get('ServiceNo') + '*\n'
+        msg = EMOJICODE.oncomingbus() + ' *' + service.get('ServiceNo') + '*\n'
         now = datetime.now()
         nxt_bus_arrival_str = service.get('NextBus').get('EstimatedArrival')
         sub_bus_arrival_str = service.get('SubsequentBus').get('EstimatedArrival')
@@ -106,18 +109,18 @@ class Bus(object):
 
     def check_bus_load(self, load):
         """Check how pack is the bus"""
-        load_emoji = " 😠"
+        load_emoji = ' ' + EMOJICODE.angry()
         if load == 'Seats Available':
-            load_emoji = " 😁"
+            load_emoji = ' '  + EMOJICODE.smile()
         elif load == 'Standing Available':
-            load_emoji = " 😓"
+            load_emoji = ' ' + EMOJICODE.sweating()
         return load_emoji
 
     def check_bus_feature(self, feature):
         """Check is it wheel chair accessible"""
-        feature_emoji = "♿"
-        if feature == "":
-            feature_emoji = ""
+        feature_emoji = EMOJICODE.wheelchair()
+        if feature == '':
+            feature_emoji = ''
         return feature_emoji
 
     def get_bus_stop_detail(self, bus_stop_id):

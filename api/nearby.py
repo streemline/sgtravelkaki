@@ -1,7 +1,11 @@
+# -*- coding: utf-8 -*-
 """ Nearby API Class """
 
 from math import cos, asin, sqrt
 import json
+from api.emojicode import EmojiCode
+
+EMOJICODE = EmojiCode()
 
 class Nearby(object):
     """Functions for nearby command"""
@@ -34,7 +38,10 @@ class Nearby(object):
         bus_stop_2 = bus_stop_list[1]
         bus_stop_3 = bus_stop_list[2]
         msg = '*Nearest 3 bus stop from your location* \n\n'
-        msg += '1. 🚏 *'+bus_stop_1['no'] + '* - ' + bus_stop_1['name'] + '\n'
-        msg += '2. 🚏 *'+bus_stop_2['no'] + '* - ' + bus_stop_2['name'] + '\n'
-        msg += '3. 🚏 *'+bus_stop_3['no'] + '* - ' + bus_stop_3['name'] + '\n'
+        msg += '1. '+ EMOJICODE.busstop() + ' *'+bus_stop_1['no']
+        msg += '* - ' + bus_stop_1['name'] + '\n'
+        msg += '2. '+ EMOJICODE.busstop() + ' *'+bus_stop_2['no']
+        msg += '* - ' + bus_stop_2['name'] + '\n'
+        msg += '3. '+ EMOJICODE.busstop() + ' *'+bus_stop_3['no']
+        msg += '* - ' + bus_stop_3['name'] + '\n'
         return msg

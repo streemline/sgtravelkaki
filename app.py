@@ -1,34 +1,42 @@
+# -*- coding: utf-8 -*-
+"""Main bot module"""
+import os
 import logging
-from telegram import InlineKeyboardButton, KeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram import InlineKeyboardButton, KeyboardButton, InlineKeyboardMarkup
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from api.bus import Bus
 from api.streetview import StreetView
 from api.nearby import Nearby
+from api.emojicode import EmojiCode
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 LOGGER = logging.getLogger(__name__)
+EMOJICODE = EmojiCode()
 
+TOKEN = ""
+PORT = int(os.environ.get('PORT', '5000'))
 
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(bot, update):
     """message send for Command: start"""
-    msg = 'Eh what\'s up😎, I got information about the buses in sg leh.🇸🇬🇸🇬' 
-    msg += 'Come now, tell me what you wanna know🚌🚏'
+    msg = 'Eh whats up'+ EMOJICODE.sunglasses() +', I got information about the buses in sg leh.'
+    msg += 'Come now, tell me what you wanna know' + EMOJICODE.bus() + EMOJICODE.busstop()
     bot.send_message(chat_id=update.message.chat.id, text=msg)
 
 def get_help(bot, update):
     """message send for Command: help"""
     msg = 'Let me show you the *command list* ah \n\n'
-    msg += '/busstop - Show bus arrival info🚏ℹ️\n'
-    msg += '/nearby - Show nearby bus stops🚏\n'
-    msg += '/businfo - Show bus info🚌ℹ️\n'
-    msg += '/emoji - Show emoji meaning😁\n'
-    msg += '/close - Close reply keyboard⌨️\n'
-    msg += '/help - Show help list🆘\n'
+    msg += '/busstop - Show bus arrival info' + EMOJICODE.busstop() + EMOJICODE.info() + '\n'
+    msg += '/nearby - Show nearby bus stops '+ EMOJICODE.busstop() + '\n'
+    msg += '/businfo - Show bus info' + EMOJICODE.bus() + EMOJICODE.info() + '\n'
+    msg += '/emoji - Show emoji meaning ' +  EMOJICODE.smile() +'\n'
+    msg += '/close - Close reply keyboard' + EMOJICODE.keyboard() +'\n'
+    msg += '/help - Show help list' +  EMOJICODE.sos() +'\n'
     msg += '/start - To start from beginning\n'
     bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
 
@@ -53,24 +61,30 @@ def bus_stop(bot, update):
         bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
 
 def nearby_bus_stop(bot, update):
+    """message send for Command: nearby"""
     location_keyboard = KeyboardButton(text="send_location", request_location=True)
-    reply_markup = ReplyKeyboardMarkup([[ location_keyboard ]], resize_keyboard=True, one_time_keyboard=True)
-    bot.send_message(chat_id=update.message.chat.id, text="Send my your location lah", 
+    reply_markup = ReplyKeyboardMarkup([[location_keyboard]], resize_keyboard=True,
+    one_time_keyboard=True)
+    bot.send_message(chat_id=update.message.chat.id, text="Send my your location lah",
     reply_markup=reply_markup)
 
 def bus_info(bot, update):
+    """message send for Command: businfo"""
     update.message.reply_text('bus info')
 
-def emoji_meaning(bot,update):
+def emoji_meaning(bot, update):
+    """message send for Command: emoji"""
     msg = 'Come, I tell you what each emoji means ah. \n\n'
-    msg += '😁 - This one means got seats in bus ah. \n'
-    msg += '😓 - This one means no seats liao. So need to stand ah. \n'
-    msg += '😠 - This one is the worst ah. No seats and no place to stand. Wait for next bus ba. \n'
-    msg += '♿ - This one means the bus is wheelchair accessible one.'
+    msg += EMOJICODE.smile() + ' - This one means got seats in bus ah. \n'
+    msg += EMOJICODE.sweating() + ' - This one means no seats liao. So need to stand ah. \n'
+    msg += EMOJICODE.angry() + ' - This one is the worst ah. No seats and no place to stand. '
+    msg += 'Wait for next bus ba. \n'
+    msg += EMOJICODE.wheelchair() + ' - This one means the bus is wheelchair accessible one.'
     bot.send_message(chat_id=update.message.chat.id, text=msg)
 
 def close_command(bot, update):
-    bot.send_message(chat_id=update.message.chat.id, text="Okay close liao.", 
+    """message send for Command: close"""
+    bot.send_message(chat_id=update.message.chat.id, text="Okay close liao.",
     reply_markup=ReplyKeyboardRemove())
 
 def echo(bot, update):
@@ -78,18 +92,19 @@ def echo(bot, update):
     update.message.reply_text(update)
 
 def location(bot, update):
+    """message send for location callback"""
     lat = update.message.location.latitude
     lng = update.message.location.longitude
     nearby = Nearby()
     nearest_3_list = nearby.get_nearest_three_bus_stops(lat,lng)
     msg = nearby.get_nearby_cmd_msg(nearest_3_list)
     button_list = [
-        [InlineKeyboardButton('🚏 ' + nearest_3_list[0]['no'], callback_data='nearby '+ 
-        nearest_3_list[0]['no'])],
-        [InlineKeyboardButton('🚏 ' + nearest_3_list[1]['no'], callback_data='nearby '+ 
-        nearest_3_list[1]['no'])],
-        [InlineKeyboardButton('🚏 ' + nearest_3_list[2]['no'], callback_data='nearby '+ 
-        nearest_3_list[2]['no'])],        
+        [InlineKeyboardButton(EMOJICODE.busstop() + ' ' + nearest_3_list[0]['no'],
+        callback_data='nearby ' + nearest_3_list[0]['no'])],
+        [InlineKeyboardButton(EMOJICODE.busstop() + ' ' + nearest_3_list[1]['no'],
+        callback_data='nearby ' + nearest_3_list[1]['no'])],
+        [InlineKeyboardButton(EMOJICODE.busstop() + ' ' + nearest_3_list[2]['no'],
+        callback_data='nearby ' + nearest_3_list[2]['no'])]
     ]
     reply_markup = InlineKeyboardMarkup(button_list)
     bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown',
@@ -97,6 +112,7 @@ def location(bot, update):
 
 
 def inline_button(bot, update):
+    """Inline button message handling"""
     callback = update.callback_query
     data_arr = callback.data.split()
     bus = Bus()
@@ -107,20 +123,22 @@ def inline_button(bot, update):
         else:
             msg = bus.get_bus_arrival_msg(data_arr[1], data_arr[2])
             reply_markup = bus_arrival_markup(data_arr[1] + ' ' + data_arr[2])
-        bot.editMessageText(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
-        text=msg, parse_mode='Markdown',reply_markup=reply_markup)
+        bot.editMessageText(chat_id=callback.message.chat.id,
+        message_id=callback.message.message_id, text=msg,
+        parse_mode='Markdown', reply_markup=reply_markup)
     elif data_arr[0] == 'streetview':
         streetview = StreetView()
         bus_stop_detail = bus.get_bus_stop_detail(data_arr[1])
         latlng = streetview.get_lat_lng_str(bus_stop_detail)
         streetview_img_url = streetview.form_street_view_img_url(latlng)
-        bot.send_photo(chat_id=callback.message.chat.id, 
+        bot.send_photo(chat_id=callback.message.chat.id,
         photo=streetview_img_url, caption=bus_stop_detail['name'])
     elif data_arr[0] == 'nearby':
         msg = bus.get_bus_arrival_msg(data_arr[1])
         reply_markup = bus_arrival_markup(data_arr[1])
-        bot.send_message(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
-        text=msg, parse_mode='Markdown',reply_markup=reply_markup)       
+        bot.send_message(chat_id=callback.message.chat.id,
+        message_id=callback.message.message_id, text=msg, 
+        parse_mode='Markdown', reply_markup=reply_markup)       
 
 def handle_error(bot, update, error):
     """message send for when error occurs"""
@@ -128,18 +146,21 @@ def handle_error(bot, update, error):
 
 
 def bus_arrival_markup(data_msg):
+        """Inline Keyboard Markup for busstop command"""
         button_list = [
             [InlineKeyboardButton("Refresh", callback_data='refresh '+ data_msg),
-            InlineKeyboardButton("Street View",  callback_data='streetview '+ data_msg)],
+            InlineKeyboardButton("Street View", callback_data='streetview '+ data_msg)],
         ]
         reply_markup = InlineKeyboardMarkup(button_list)
         return reply_markup
 
 
 def main():
-    """Main def"""
+    """Main function"""
     # Create the EventHandler and pass it your bot's token.
-    updater = Updater("")
+    updater = Updater(TOKEN)
+    updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
+    updater.bot.set_webhook("https://<app_name>.herokuapp.com/" + TOKEN)
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher

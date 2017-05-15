@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Street View Module"""
 API_KEY = ""
 
