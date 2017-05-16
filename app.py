@@ -87,7 +87,7 @@ def bus_info(bot, update):
 def mrt_map(bot, update):
     """message send for Command: mrtmap"""
     msg = '*MRT map*\n\n'
-    msg += 'Click [here](https://goo.gl/Mkat2U)'
+    msg += 'Click [here](https://www.transitlink.com.sg/images/eguide/mrt_sys_map.htm)'
     bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
 
 def emoji_meaning(bot, update):
