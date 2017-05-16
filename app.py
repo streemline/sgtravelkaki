@@ -25,8 +25,9 @@ PORT = int(os.environ.get('PORT', '5000'))
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(bot, update):
     """message send for Command: start"""
-    msg = 'Eh whats up'+ EMOJICODE.sunglasses() +', I got information about the buses in sg leh.'
-    msg += 'Come now, tell me what you wanna know' + EMOJICODE.bus() + EMOJICODE.busstop()
+    msg = 'Eh whats up'+ EMOJICODE.sunglasses() +', I got information about '
+    msg += 'the buses in Singapore leh. Just tell me what you wanna know and I will tell you.'
+    msg += EMOJICODE.bus() + EMOJICODE.busstop()
     bot.send_message(chat_id=update.message.chat.id, text=msg)
 
 def get_help(bot, update):
