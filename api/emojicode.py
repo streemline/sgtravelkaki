@@ -48,3 +48,7 @@ class EmojiCode(object):
     def sweating(self):
         """Return sweating emoji"""
         return emojize(":sweat:", use_aliases=True)
+
+    def office(self):
+        """Return office emoji"""
+        return emojize(":office:", use_aliases=True)

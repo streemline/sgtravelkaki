@@ -9,6 +9,7 @@ from api.bus import Bus
 from api.streetview import StreetView
 from api.nearby import Nearby
 from api.emojicode import EmojiCode
+from api.businfo import BusInfo
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -56,7 +57,7 @@ def bus_stop(bot, update):
         reply_markup=reply_markup)
     else:
         msg = 'Tell me the bus stop no in this format ah. \n\n'
-        msg += '*Format* : \n/busstop <bus stop no> <bus no>(optional) \n\n'
+        msg += '*Format* : \n- /busstop <bus stop no> <bus no>(optional) \n\n'
         msg += '*Example* : \n- /busstop 67329 \n- /busstop 67329 163'
         bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
 
@@ -65,12 +66,21 @@ def nearby_bus_stop(bot, update):
     location_keyboard = KeyboardButton(text="send_location", request_location=True)
     reply_markup = ReplyKeyboardMarkup([[location_keyboard]], resize_keyboard=True,
     one_time_keyboard=True)
-    bot.send_message(chat_id=update.message.chat.id, text="Send my your location lah",
+    bot.send_message(chat_id=update.message.chat.id, text="Please send me your location ah.",
     reply_markup=reply_markup)
 
 def bus_info(bot, update):
     """message send for Command: businfo"""
-    update.message.reply_text('bus info')
+    split_arr = update.message.text.split()
+    bus_info = BusInfo()
+    if len(split_arr) == 2:
+       msg = bus_info.get_bus_info_msg(split_arr[1])
+       bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
+    else:
+        msg = 'Tell me the bus no in this format ah. \n\n'
+        msg += '*Format* : \n- /businfo <bus no>\n\n'
+        msg += '*Example* : \n- /businfo 50 \n- /businfo 163'
+        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
 
 def emoji_meaning(bot, update):
     """message send for Command: emoji"""
