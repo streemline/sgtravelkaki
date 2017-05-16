@@ -37,6 +37,7 @@ def get_help(bot, update):
     msg += '/nearby - Show nearby bus stops '+ EMOJICODE.busstop() + '\n'
     msg += '/businfo - Show bus info' + EMOJICODE.bus() + EMOJICODE.info() + '\n'
     msg += '/emoji - Show emoji meaning ' +  EMOJICODE.smile() +'\n'
+    msg += '/mrtmap - Show MRT map ' +  EMOJICODE.station() +'\n'
     msg += '/close - Close reply keyboard' + EMOJICODE.keyboard() +'\n'
     msg += '/help - Show help list' +  EMOJICODE.sos() +'\n'
     msg += '/start - To start from beginning\n'
@@ -82,6 +83,12 @@ def bus_info(bot, update):
         msg += '*Format* : \n- /businfo <bus no>\n\n'
         msg += '*Example* : \n- /businfo 50 \n- /businfo 163'
         bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
+
+def mrt_map(bot, update):
+    """message send for Command: mrtmap"""
+    msg = '*MRT map*\n\n'
+    msg += 'Click [here](https://goo.gl/Mkat2U)'
+    bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
 
 def emoji_meaning(bot, update):
     """message send for Command: emoji"""
@@ -181,6 +188,7 @@ def main():
     dispatcher.add_handler(CommandHandler("busstop", bus_stop))
     dispatcher.add_handler(CommandHandler("nearby", nearby_bus_stop))
     dispatcher.add_handler(CommandHandler("businfo", bus_info))
+    dispatcher.add_handler(CommandHandler("mrtmap", mrt_map))
     dispatcher.add_handler(CommandHandler("emoji", emoji_meaning))
     dispatcher.add_handler(CommandHandler("close", close_command))
     dispatcher.add_handler(CommandHandler("help", get_help))

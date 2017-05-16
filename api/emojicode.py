@@ -52,3 +52,7 @@ class EmojiCode(object):
     def office(self):
         """Return office emoji"""
         return emojize(":office:", use_aliases=True)
+
+    def station(self):
+        """Return station emoji"""
+        return emojize(":station:", use_aliases=True)
