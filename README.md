@@ -26,5 +26,7 @@ updater.bot.set_webhook("https://<app_name>.herokuapp.com/" + TOKEN)
 
 ## Reference
 - This package is used to build this bot. [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
-- Heroku set up [guide](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction)
+- Heroku set up guide. [Find out more](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction)
+- LTA Datamall API guide. [Find out more](https://www.mytransport.sg/content/dam/mytransport/DataMall_StaticData/LTA_DataMall_API_User_Guide.pdf)
+- Street View API docs. [Learn more](https://developers.google.com/maps/documentation/streetview/intro)
 - Try out this bot here [@OiBusLehBot](https://telegram.me/oibuslehbot)
