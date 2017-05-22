@@ -2,6 +2,8 @@
 
 A telegram bot that provides Singapore bus information.
 
+Bus logo is made by Freepik (www.freepik.com) from www.flaticon.com
+
 ## Set up
 1. Set up python 3 environment. 
 2. Install package from requirement.txt using `pip install requirements.txt`
