@@ -25,7 +25,7 @@ PORT = int(os.environ.get('PORT', '5000'))
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(bot, update):
     """message send for Command: start"""
-    msg = 'Eh whats up'+ EMOJICODE.sunglasses() +', I got information about '
+    msg = 'Whats up'+ EMOJICODE.sunglasses() +', I got information about '
     msg += 'the buses in Singapore leh. Just tell me what you wanna know and I will tell you.'
     msg += EMOJICODE.bus() + EMOJICODE.busstop()
     bot.send_message(chat_id=update.message.chat.id, text=msg)
@@ -68,7 +68,7 @@ def nearby_bus_stop(bot, update):
     location_keyboard = KeyboardButton(text="send_location", request_location=True)
     reply_markup = ReplyKeyboardMarkup([[location_keyboard]], resize_keyboard=True,
     one_time_keyboard=True)
-    bot.send_message(chat_id=update.message.chat.id, text="Please send me your location ah.",
+    bot.send_message(chat_id=update.message.chat.id, text="Please tell me where you are.",
     reply_markup=reply_markup)
 
 def bus_info(bot, update):
@@ -92,7 +92,7 @@ def mrt_map(bot, update):
 
 def emoji_meaning(bot, update):
     """message send for Command: emoji"""
-    msg = 'Come, I tell you what each emoji means ah. \n\n'
+    msg = 'Let me tell you what each emoji means ah. \n\n'
     msg += EMOJICODE.smile() + ' - This one means got seats in bus ah. \n'
     msg += EMOJICODE.sweating() + ' - This one means no seats liao. So need to stand ah. \n'
     msg += EMOJICODE.angry() + ' - This one is the worst ah. No seats and no place to stand. '
