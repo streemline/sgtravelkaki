@@ -147,10 +147,14 @@ def inline_button(bot, update):
     elif data_arr[0] == 'streetview':
         streetview = StreetView()
         bus_stop_detail = bus.get_bus_stop_detail(data_arr[1])
-        latlng = streetview.get_lat_lng_str(bus_stop_detail)
-        streetview_img_url = streetview.form_street_view_img_url(latlng)
-        bot.send_photo(chat_id=callback.message.chat.id,
-        photo=streetview_img_url, caption=bus_stop_detail['name'])
+        if bus_stop_detail is not None:
+            latlng = streetview.get_lat_lng_str(bus_stop_detail)
+            streetview_img_url = streetview.form_street_view_img_url(latlng)
+            bot.send_photo(chat_id=callback.message.chat.id,
+            photo=streetview_img_url, caption=bus_stop_detail['name'])
+        else:
+            bot.send_message(chat_id=callback.message.chat.id,
+            message_id=callback.message.message_id, text='Bus stop not found leh.')
     elif data_arr[0] == 'nearby':
         msg = bus.get_bus_arrival_msg(data_arr[1])
         reply_markup = bus_arrival_markup(data_arr[1])
