@@ -5,6 +5,7 @@ import logging
 from telegram import InlineKeyboardButton, KeyboardButton, InlineKeyboardMarkup
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
+from telegram.contrib.botan import Botan
 from api.bus import Bus
 from api.streetview import StreetView
 from api.nearby import Nearby
@@ -18,18 +19,21 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 LOGGER = logging.getLogger(__name__)
 EMOJICODE = EmojiCode()
 
-TOKEN = ""
+TOKEN = 'TELEGRAM-BOT-TOKEN'
 PORT = int(os.environ.get('PORT', '5000'))
+BOTAN = Botan('BOTAN-API-KEY')
 
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(bot, update):
     """message send for Command: start"""
+    BOTAN.track(update.message, event_name='/start')
     msg = 'Whats up'+ EMOJICODE.sunglasses() +', what do you want me to do for you ah?'
     bot.send_message(chat_id=update.message.chat.id, text=msg)
 
 def get_help(bot, update):
     """message send for Command: help"""
+    BOTAN.track(update.message, event_name='/help')
     msg = 'Let me show you the *command list* ah \n\n'
     msg += '/busstop - Show bus arrival info' + EMOJICODE.busstop() + EMOJICODE.info() + '\n'
     msg += '/nearby - Show nearby bus stops '+ EMOJICODE.busstop() + '\n'
@@ -46,16 +50,19 @@ def bus_stop(bot, update):
     split_arr = update.message.text.split()
     bus = Bus()
     if len(split_arr) == 2:
+        BOTAN.track(update.message, event_name='/busstop all')
         msg = bus.get_bus_arrival_msg(split_arr[1])
         reply_markup = bus_arrival_markup(split_arr[1])
         bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown',
         reply_markup=reply_markup)
     elif len(split_arr) == 3:
+        BOTAN.track(update.message, event_name='/busstop single')
         msg = bus.get_bus_arrival_msg(split_arr[1], split_arr[2])
         reply_markup = bus_arrival_markup(split_arr[1] + ' ' + split_arr[2])
         bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown',
         reply_markup=reply_markup)
     else:
+        BOTAN.track(update.message, event_name='/busstop')
         msg = 'Tell me the bus stop no in this format ah. \n\n'
         msg += '*Format* : \n- /busstop <bus stop no> <bus no>(optional) \n\n'
         msg += '*Example* : \n- /busstop 67329 \n- /busstop 67329 163'
@@ -63,6 +70,7 @@ def bus_stop(bot, update):
 
 def nearby_bus_stop(bot, update):
     """message send for Command: nearby"""
+    BOTAN.track(update.message, event_name='/nearby')
     location_keyboard = KeyboardButton(text="send_location", request_location=True)
     reply_markup = ReplyKeyboardMarkup([[location_keyboard]], resize_keyboard=True,
     one_time_keyboard=True)
@@ -74,9 +82,11 @@ def bus_info(bot, update):
     split_arr = update.message.text.split()
     bus_info = BusInfo()
     if len(split_arr) == 2:
-       msg = bus_info.get_bus_info_msg(split_arr[1])
-       bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
+        BOTAN.track(update.message, event_name='/businfo bus')
+        msg = bus_info.get_bus_info_msg(split_arr[1])
+        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
     else:
+        BOTAN.track(update.message, event_name='/businfo')
         msg = 'Tell me the bus no in this format ah. \n\n'
         msg += '*Format* : \n- /businfo <bus no>\n\n'
         msg += '*Example* : \n- /businfo 50 \n- /businfo 163'
@@ -84,12 +94,14 @@ def bus_info(bot, update):
 
 def mrt_map(bot, update):
     """message send for Command: mrtmap"""
+    BOTAN.track(update.message, event_name='/mrtmap')
     msg = '*MRT map*\n\n'
     msg += 'Click [here](https://www.transitlink.com.sg/images/eguide/mrt_sys_map.htm)'
     bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
 
 def emoji_meaning(bot, update):
     """message send for Command: emoji"""
+    BOTAN.track(update.message, event_name='/emoji')
     msg = 'Let me tell you what each emoji means ah. \n\n'
     msg += EMOJICODE.smile() + ' - This one means got seats in bus ah. \n'
     msg += EMOJICODE.sweating() + ' - This one means no seats liao. So need to stand ah. \n'
@@ -100,15 +112,19 @@ def emoji_meaning(bot, update):
 
 def close_command(bot, update):
     """message send for Command: close"""
+    BOTAN.track(update.message, event_name='/close')
     bot.send_message(chat_id=update.message.chat.id, text="Okay close liao.",
     reply_markup=ReplyKeyboardRemove())
 
 def echo(bot, update):
     """message send for user input"""
-    update.message.reply_text(update)
+    BOTAN.track(update.message, event_name='echo')
+    bot.send_message(chat_id=update.message.chat.id, 
+    text="I'm still not smart enough to understand what you are saying ah.")
 
 def location(bot, update):
     """message send for location callback"""
+    BOTAN.track(update.message, event_name='location-callback')
     lat = update.message.location.latitude
     lng = update.message.location.longitude
     nearby = Nearby()
@@ -134,9 +150,11 @@ def inline_button(bot, update):
     bus = Bus()
     if data_arr[0] == 'refresh':
         if len(data_arr) == 2:
+            BOTAN.track(callback, event_name='inline-btn-refresh-all')
             msg = bus.get_bus_arrival_msg(data_arr[1])
             reply_markup = bus_arrival_markup(data_arr[1])
         else:
+            BOTAN.track(callback, event_name='inline-btn-refresh-single')
             msg = bus.get_bus_arrival_msg(data_arr[1], data_arr[2])
             reply_markup = bus_arrival_markup(data_arr[1] + ' ' + data_arr[2])
         bot.editMessageText(chat_id=callback.message.chat.id,
@@ -146,14 +164,17 @@ def inline_button(bot, update):
         streetview = StreetView()
         bus_stop_detail = bus.get_bus_stop_detail(data_arr[1])
         if bus_stop_detail is not None:
+            BOTAN.track(callback, event_name='inline-btn-streetview')
             latlng = streetview.get_lat_lng_str(bus_stop_detail)
             streetview_img_url = streetview.form_street_view_img_url(latlng)
             bot.send_photo(chat_id=callback.message.chat.id,
             photo=streetview_img_url, caption=bus_stop_detail['name'])
         else:
+            BOTAN.track(callback, event_name='inline-btn-streetview-not-found')
             bot.send_message(chat_id=callback.message.chat.id,
-            message_id=callback.message.message_id, text='Bus stop not found leh.')
+            message_id=callback.message.message_id, text='Bus stop not found leh.')  
     elif data_arr[0] == 'nearby':
+        BOTAN.track(callback, event_name='inline-btn-nearby')
         msg = bus.get_bus_arrival_msg(data_arr[1])
         reply_markup = bus_arrival_markup(data_arr[1])
         bot.send_message(chat_id=callback.message.chat.id,
@@ -162,6 +183,7 @@ def inline_button(bot, update):
 
 def handle_error(bot, update, error):
     """message send for when error occurs"""
+    BOTAN.track(update.message, event_name='error')
     LOGGER.warn('Update "%s" caused error "%s"' % (update, error))
 
 
@@ -180,7 +202,7 @@ def main():
     # Create the EventHandler and pass it your bot's token.
     updater = Updater(TOKEN)
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
-    updater.bot.set_webhook("https://<app_name>.herokuapp.com/" + TOKEN)
+    updater.bot.set_webhook("https://<app-name>.herokuapp.com/" + TOKEN)
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
