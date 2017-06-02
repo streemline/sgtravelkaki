@@ -2,9 +2,11 @@
 """Main bot module"""
 import os
 import logging
+import json
 from telegram import InlineKeyboardButton, KeyboardButton, InlineKeyboardMarkup
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
+from telegram import InlineQueryResultArticle,InputTextMessageContent
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, InlineQueryHandler
 from telegram.contrib.botan import Botan
 from api.bus import Bus
 from api.streetview import StreetView
@@ -19,7 +21,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 LOGGER = logging.getLogger(__name__)
 EMOJICODE = EmojiCode()
 
-TOKEN = 'TELEGRAM-BOT-TOKEN'
+TOKEN = 'TELEGRAM-TOKEN'
 PORT = int(os.environ.get('PORT', '5000'))
 BOTAN = Botan('BOTAN-API-KEY')
 
@@ -64,9 +66,15 @@ def bus_stop(bot, update):
     else:
         BOTAN.track(update.message, event_name='/busstop')
         msg = 'Tell me the bus stop no in this format ah. \n\n'
-        msg += '*Format* : \n- /busstop <bus stop no> <bus no>(optional) \n\n'
-        msg += '*Example* : \n- /busstop 67329 \n- /busstop 67329 163'
-        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
+        msg += '*Format* : \n- /busstop <bus stop no> <bus no> (optional) \n\n'
+        msg += '*Example* : \n- /busstop 67329 \n- /busstop 67329 163 \n\n'
+        msg += 'You can also send me a inline query by typing @oibuslehbot followed '
+        msg += 'by the bus stop name or code.'
+        reply_markup = InlineKeyboardMarkup([
+            [InlineKeyboardButton("Try inline query", switch_inline_query_current_chat='67321')]
+        ])
+        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown',
+        reply_markup=reply_markup)
 
 def nearby_bus_stop(bot, update):
     """message send for Command: nearby"""
@@ -116,6 +124,25 @@ def close_command(bot, update):
     bot.send_message(chat_id=update.message.chat.id, text="Okay close liao.",
     reply_markup=ReplyKeyboardRemove())
 
+def inlinequery(bot, update):
+    """Inline query message handling"""
+    query = str(update.inline_query.query).lower()
+    results = list()  
+    bus = Bus()
+    with open('data/busstop.json') as json_data:
+        bus_stop_list = json.load(json_data)
+        for bus_stop in bus_stop_list:
+            if query in bus_stop['no'].lower() or query in bus_stop['name'].lower():
+                reply_markup = bus_arrival_inline_markup(bus_stop['no'])
+                results.append(InlineQueryResultArticle(id=bus_stop['no'],
+                title=bus_stop['no'] + ' - ' + bus_stop['name'], 
+                description=bus_stop['name'], reply_markup=reply_markup,
+                input_message_content=InputTextMessageContent('Click refresh to get bus timing.')))
+            if len(results) == 30:
+                update.inline_query.answer(results)
+                break
+        update.inline_query.answer(results)
+
 def echo(bot, update):
     """message send for user input"""
     BOTAN.track(update.message, event_name='echo')
@@ -147,7 +174,7 @@ def inline_button(bot, update):
     """Inline button message handling"""
     callback = update.callback_query
     data_arr = callback.data.split()
-    bus = Bus()
+    bus = Bus()   
     if data_arr[0] == 'refresh':
         if len(data_arr) == 2:
             BOTAN.track(callback, event_name='inline-btn-refresh-all')
@@ -160,6 +187,16 @@ def inline_button(bot, update):
         bot.editMessageText(chat_id=callback.message.chat.id,
         message_id=callback.message.message_id, text=msg,
         parse_mode='Markdown', reply_markup=reply_markup)
+        bot.answerCallbackQuery(callback_query_id=callback.id,
+        text='Bus timing updated')
+    elif data_arr[0] == 'inline-mode-refresh':
+        BOTAN.track(callback, event_name='inline-mode-inline-btn-refresh-all')
+        msg = bus.get_bus_arrival_msg(data_arr[1])
+        reply_markup = bus_arrival_inline_markup(data_arr[1])
+        bot.editMessageText(inline_message_id =callback.inline_message_id, text=msg,
+        parse_mode='Markdown', reply_markup=reply_markup)
+        bot.answerCallbackQuery(callback_query_id=callback.id,
+        text='Bus timing updated')
     elif data_arr[0] == 'streetview':
         streetview = StreetView()
         bus_stop_detail = bus.get_bus_stop_detail(data_arr[1])
@@ -169,17 +206,23 @@ def inline_button(bot, update):
             streetview_img_url = streetview.form_street_view_img_url(latlng)
             bot.send_photo(chat_id=callback.message.chat.id,
             photo=streetview_img_url, caption=bus_stop_detail['name'])
+            bot.answerCallbackQuery(callback_query_id=callback.id,
+            text='Bus stop photo shown')
         else:
             BOTAN.track(callback, event_name='inline-btn-streetview-not-found')
             bot.send_message(chat_id=callback.message.chat.id,
             message_id=callback.message.message_id, text='Bus stop not found leh.')  
+            bot.answerCallbackQuery(callback_query_id=callback.id,
+            text='No bus stop photo found')
     elif data_arr[0] == 'nearby':
         BOTAN.track(callback, event_name='inline-btn-nearby')
         msg = bus.get_bus_arrival_msg(data_arr[1])
         reply_markup = bus_arrival_markup(data_arr[1])
         bot.send_message(chat_id=callback.message.chat.id,
         message_id=callback.message.message_id, text=msg, 
-        parse_mode='Markdown', reply_markup=reply_markup)       
+        parse_mode='Markdown', reply_markup=reply_markup)   
+        bot.answerCallbackQuery(callback_query_id=callback.id,
+        text='Bus timing shown')    
 
 def handle_error(bot, update, error):
     """message send for when error occurs"""
@@ -195,6 +238,15 @@ def bus_arrival_markup(data_msg):
         ]
         reply_markup = InlineKeyboardMarkup(button_list)
         return reply_markup
+
+def bus_arrival_inline_markup(bus_no):
+    """Inline Keyboard Markup for inline command"""
+    button_list = [
+        [InlineKeyboardButton("Refresh", callback_data='inline-mode-refresh '
+        + bus_no)]
+    ]
+    reply_markup = InlineKeyboardMarkup(button_list)
+    return reply_markup
 
 
 def main():
@@ -225,6 +277,9 @@ def main():
 
     #on location callback
     dispatcher.add_handler(MessageHandler(Filters.location, location))
+
+    # on noncommand i.e message - echo the message on Telegram
+    dispatcher.add_handler(InlineQueryHandler(inlinequery))
 
     # log all errors
     dispatcher.add_error_handler(handle_error)
