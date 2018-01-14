@@ -79,9 +79,10 @@ class Bus(object):
         if nxt_bus_arrival_str != "":
             mins = self.get_date_diff_min(now, nxt_bus_arrival_str)
             mins_str = self.get_min_diff_str(mins)
+            bus_type_code = service.get('NextBus').get('Type')
             bus_load = service.get('NextBus').get('Load')
             bus_feature = service.get('NextBus').get('Feature')
-            msg += 'Next: ' + mins_str + self.check_bus_load(bus_load)
+            msg += 'Next' + self.check_type_of_bus(bus_type_code)  + ': ' + mins_str + self.check_bus_load(bus_load)
             msg += self.check_bus_feature(bus_feature) + '\n'
         else:
             msg += 'Next: No ETA \n'
@@ -89,9 +90,10 @@ class Bus(object):
         if sub_bus_arrival_str != "":
             mins = self.get_date_diff_min(now, sub_bus_arrival_str)
             mins_str = self.get_min_diff_str(mins)
+            bus_type_code = service.get('NextBus2').get('Type')
             bus_load = service.get('NextBus2').get('Load')
             bus_feature = service.get('NextBus2').get('Feature')
-            msg += 'Sub: ' + mins_str + self.check_bus_load(bus_load)
+            msg += 'Sub' + self.check_type_of_bus(bus_type_code)  + ': ' + mins_str + self.check_bus_load(bus_load)
             msg += self.check_bus_feature(bus_feature) + '\n'
         else:
             msg += 'Sub: No ETA \n'
@@ -99,9 +101,10 @@ class Bus(object):
         if sub_bus_arrival_str3 != "":
             mins = self.get_date_diff_min(now, sub_bus_arrival_str3)
             mins_str = self.get_min_diff_str(mins)
+            bus_type_code = service.get('NextBus3').get('Type')
             bus_load = service.get('NextBus3').get('Load')
             bus_feature = service.get('NextBus3').get('Feature')
-            msg += 'After: ' + mins_str + self.check_bus_load(bus_load)
+            msg += 'After' + self.check_type_of_bus(bus_type_code)  + ': ' + mins_str + self.check_bus_load(bus_load)
             msg += self.check_bus_feature(bus_feature) + '\n\n'
         else:
             msg += 'After: No ETA \n\n'
@@ -115,6 +118,15 @@ class Bus(object):
         elif load == 'SDA':
             load_emoji = ' ' + EMOJICODE.sweating()
         return load_emoji
+    
+    def check_type_of_bus(self,bus_type_code):
+        """Check the type of bus"""
+        type_of_bus = '(Single)'
+        if bus_type_code == 'DD':
+            type_of_bus = '(Double)'
+        elif bus_type_code == 'BD':
+            type_of_bus = '(Bendy)'
+        return type_of_bus
 
     def check_bus_feature(self, feature):
         """Check is it wheel chair accessible"""
