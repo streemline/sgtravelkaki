@@ -15,8 +15,8 @@ class Bus(object):
     """Bus arrival API"""
     def get_bus_arrival_json(self, bus_stop_id):
         """Call http get request and return JSON data"""
-        url = 'http://datamall2.mytransport.sg/ltaodataservice/BusArrival?BusStopID='
-        url += bus_stop_id +'&SST=True'
+        url = 'http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2?BusStopCode='
+        url += bus_stop_id
         headers = {'AccountKey': API_KEY}
         result = requests.get(url, headers=headers)
         res = json.loads(result.text)
@@ -26,7 +26,7 @@ class Bus(object):
         """Return formatted bus arrival message"""
         res = self.get_bus_arrival_json(bus_stop_id)
         got_bus_services = self.check_for_bus_service(res)
-        msg = EMOJICODE.busstop() + ' *' + res.get('BusStopID') + '* - '
+        msg = EMOJICODE.busstop() + ' *' + res.get('BusStopCode') + '* - '
         if got_bus_services:
             bus_stop_detail = self.get_bus_stop_detail(bus_stop_id)
             msg += bus_stop_detail['name'] + "\n\n"
@@ -73,8 +73,8 @@ class Bus(object):
         msg = EMOJICODE.oncomingbus() + ' *' + service.get('ServiceNo') + '*\n'
         now = datetime.now()
         nxt_bus_arrival_str = service.get('NextBus').get('EstimatedArrival')
-        sub_bus_arrival_str = service.get('SubsequentBus').get('EstimatedArrival')
-        sub_bus_arrival_str3 = service.get('SubsequentBus3').get('EstimatedArrival')
+        sub_bus_arrival_str = service.get('NextBus2').get('EstimatedArrival')
+        sub_bus_arrival_str3 = service.get('NextBus3').get('EstimatedArrival')
         # Next bus arrival time
         if nxt_bus_arrival_str != "":
             mins = self.get_date_diff_min(now, nxt_bus_arrival_str)
@@ -89,8 +89,8 @@ class Bus(object):
         if sub_bus_arrival_str != "":
             mins = self.get_date_diff_min(now, sub_bus_arrival_str)
             mins_str = self.get_min_diff_str(mins)
-            bus_load = service.get('SubsequentBus').get('Load')
-            bus_feature = service.get('SubsequentBus').get('Feature')
+            bus_load = service.get('NextBus2').get('Load')
+            bus_feature = service.get('NextBus2').get('Feature')
             msg += 'Sub: ' + mins_str + self.check_bus_load(bus_load)
             msg += self.check_bus_feature(bus_feature) + '\n'
         else:
@@ -99,8 +99,8 @@ class Bus(object):
         if sub_bus_arrival_str3 != "":
             mins = self.get_date_diff_min(now, sub_bus_arrival_str3)
             mins_str = self.get_min_diff_str(mins)
-            bus_load = service.get('SubsequentBus3').get('Load')
-            bus_feature = service.get('SubsequentBus3').get('Feature')
+            bus_load = service.get('NextBus3').get('Load')
+            bus_feature = service.get('NextBus3').get('Feature')
             msg += 'After: ' + mins_str + self.check_bus_load(bus_load)
             msg += self.check_bus_feature(bus_feature) + '\n\n'
         else:
@@ -110,9 +110,9 @@ class Bus(object):
     def check_bus_load(self, load):
         """Check how pack is the bus"""
         load_emoji = ' ' + EMOJICODE.angry()
-        if load == 'Seats Available':
+        if load == 'SEA':
             load_emoji = ' '  + EMOJICODE.smile()
-        elif load == 'Standing Available':
+        elif load == 'SDA':
             load_emoji = ' ' + EMOJICODE.sweating()
         return load_emoji
 
