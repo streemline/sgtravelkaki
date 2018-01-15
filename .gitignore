@@ -49,4 +49,4 @@ pip-delete-this-directory.txt
 *.pot
 .webassets-cache
 
-KEEP.js
+.vscode
