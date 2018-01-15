@@ -5,7 +5,7 @@ A telegram bot that provides Singapore bus information.
 Bus logo is made by Freepik (www.freepik.com) from www.flaticon.com
 
 ## Set up
-1. Set up python 3 environment. 
+1. Set up python 2 environment. 
 2. Install package from requirement.txt using `pip install requirements.txt`
 2. Add in Telegram Bot API-KEY at `TOKEN = ""` in app.py. Create a new bot using [@BotFather](https://telegram.me/botfather) at Telegram. 
 3. Add in LTA Datamall API-KEY at `API_KEY = ""` in bus.py which is inside the api folder. More info can be found at [mytransport.sg](https://www.mytransport.sg/content/mytransport/home/dataMall.html?myRad=3)
