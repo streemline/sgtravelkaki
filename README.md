@@ -1,6 +1,6 @@
 # <img src="https://thumb.ibb.co/mO2isR/sgtravelkaki.png" width=50 /> Travel Kaki
 
-A telegram bot that provides transport informaion about Singapore
+A telegram bot that provides transport information about Singapore
 
 Bus logo is made by Freepik (www.freepik.com) from www.flaticon.com
 
