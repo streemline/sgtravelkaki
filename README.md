@@ -1,6 +1,6 @@
-# <img src="https://image.ibb.co/gd2eY5/7140ed35_9c05_47b8_ac23_72c2eeb6ec21.jpg" width=50 /> OiBusLeh
+# <img src="https://thumb.ibb.co/mO2isR/sgtravelkaki.png" width=50 /> Travel Kaki
 
-A telegram bot that provides Singapore bus information.
+A telegram bot that provides transport information about Singapore
 
 Bus logo is made by Freepik (www.freepik.com) from www.flaticon.com
 
@@ -31,4 +31,4 @@ updater.bot.set_webhook("https://<app_name>.herokuapp.com/" + TOKEN)
 - Heroku set up guide. [Find out more](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction)
 - LTA Datamall API guide. [Find out more](https://www.mytransport.sg/content/dam/mytransport/DataMall_StaticData/LTA_DataMall_API_User_Guide.pdf)
 - Street View API docs. [Learn more](https://developers.google.com/maps/documentation/streetview/intro)
-- Try out this bot here [@OiBusLehBot](https://telegram.me/oibuslehbot)
+- Try out this bot here [@sgtravelkakibot](https://telegram.me/sgtravelkakibot)
