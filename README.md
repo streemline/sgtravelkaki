@@ -32,3 +32,9 @@ updater.bot.set_webhook("https://<app_name>.herokuapp.com/" + TOKEN)
 - LTA Datamall API guide. [Find out more](https://www.mytransport.sg/content/dam/mytransport/DataMall_StaticData/LTA_DataMall_API_User_Guide.pdf)
 - Street View API docs. [Learn more](https://developers.google.com/maps/documentation/streetview/intro)
 - Try out this bot here [@sgtravelkakibot](https://telegram.me/sgtravelkakibot)
+
+## Screenshots
+<img src="https://raw.githubusercontent.com/luazhizhan/sgtravelkaki/master/screenshots/travelkakibot-example.png" width=250 height=400 align="left">
+<img src="https://raw.githubusercontent.com/luazhizhan/sgtravelkaki/master/screenshots/travelkakibot-example2.png" width=250 height=400 align="left">
+
+
