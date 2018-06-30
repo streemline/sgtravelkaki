@@ -2,7 +2,7 @@
 
 A telegram bot that provides transport information about Singapore
 
-Bus logo is made by Freepik (www.freepik.com) from www.flaticon.com
+Bot logo is made by Freepik (www.freepik.com) from www.flaticon.com
 
 ## Set up
 1. Set up python 2 environment. 
