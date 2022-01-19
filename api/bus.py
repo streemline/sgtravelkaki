@@ -19,8 +19,7 @@ class Bus(object):
         url += bus_stop_id
         headers = {'AccountKey': API_KEY}
         result = requests.get(url, headers=headers)
-        res = json.loads(result.text)
-        return res
+        return json.loads(result.text)
 
     def get_bus_arrival_msg(self, bus_stop_id, bus_no=''):
         """Return formatted bus arrival message"""
@@ -46,9 +45,7 @@ class Bus(object):
 
     def check_for_bus_service(self, res):
         """Check for any bus services at bus stop and return bool"""
-        if len(res.get('Services')) is not 0:
-            return True
-        return False
+        return len(res.get('Services')) is not 0
 
     def get_date_diff_min(self, now, bus_arrival_str):
         """Return mins diffence of two dates"""
@@ -61,12 +58,11 @@ class Bus(object):
     def get_min_diff_str(self, mins):
         """Check time left and return as string"""
         if mins > 1:
-            mins_str = str(mins) + ' mins'
+            return str(mins) + ' mins'
         elif mins is 1:
-            mins_str = str(mins) + ' min'
+            return str(mins) + ' min'
         else:
-            mins_str = 'Arriving'
-        return mins_str
+            return 'Arriving'
 
     def format_bus_arrival_info(self, service):
         """Return formatted bus arrival info"""

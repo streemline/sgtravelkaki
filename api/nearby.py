@@ -12,8 +12,7 @@ class Nearby(object):
     def get_bus_stop_data(self):
         """Load busstop.json file and return bus stop json data"""
         with open('data/busstop.json') as json_data:
-            data = json.load(json_data)
-            return data
+            return json.load(json_data)
 
     def distance(self, lat1, lon1, lat2, lon2):
         """Calculate distance between 2 lat lng using Haversine formula"""
@@ -28,8 +27,7 @@ class Nearby(object):
             dist = self.distance(lat, lng, float(bus_stop['lat']), float(bus_stop['lng']))
             bus_stop['distance'] = dist
         sort_bus_stop_list = sorted(bus_stop_data, key=lambda k: k['distance'])
-        top_three_list = [sort_bus_stop_list[0], sort_bus_stop_list[1], sort_bus_stop_list[2]]
-        return top_three_list
+        return [sort_bus_stop_list[0], sort_bus_stop_list[1], sort_bus_stop_list[2]]
 
     def get_nearby_cmd_msg(self, bus_stop_list):
         """Return formatted message of the three nearest bus stop from
