@@ -57,26 +57,27 @@ def bus_stop(bot, update):
         botan.track(BOTAN_TOKEN, update.message.chat.id, update.message, '/busstop all')
         msg = bus.get_bus_arrival_msg(split_arr[1])
         reply_markup = bus_arrival_markup(split_arr[1])
-        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown',
-        reply_markup=reply_markup)
     elif len(split_arr) == 3:
         botan.track(BOTAN_TOKEN, update.message.chat.id, update.message, '/busstop single')
         msg = bus.get_bus_arrival_msg(split_arr[1], split_arr[2])
         reply_markup = bus_arrival_markup(split_arr[1] + ' ' + split_arr[2])
-        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown',
-        reply_markup=reply_markup)
     else:
         botan.track(BOTAN_TOKEN, update.message.chat.id, update.message, '/busstop')
-        msg = 'Tell me the bus stop no in this format ah. \n\n'
-        msg += '*Format* : \n- /busstop <bus stop no> <bus no> (optional) \n\n'
+        msg = (
+            'Tell me the bus stop no in this format ah. \n\n'
+            + '*Format* : \n- /busstop <bus stop no> <bus no> (optional) \n\n'
+        )
+
+
         msg += '*Example* : \n- /busstop 67329 \n- /busstop 67329 163 \n\n'
         msg += 'You can also send me a inline query by typing @sgtravelkakibot followed '
         msg += 'by the bus stop name or code.'
         reply_markup = InlineKeyboardMarkup([
             [InlineKeyboardButton("Try inline query", switch_inline_query_current_chat='67321')]
         ])
-        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown',
-        reply_markup=reply_markup)
+
+    bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown',
+    reply_markup=reply_markup)
 
 def nearby_bus_stop(bot, update):
     """message send for Command: nearby"""
@@ -94,19 +95,23 @@ def bus_info(bot, update):
     if len(split_arr) == 2:
         botan.track(BOTAN_TOKEN, update.message.chat.id, update.message, '/businfo bus')
         msg = bus_info.get_bus_info_msg(split_arr[1])
-        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
     else:
         botan.track(BOTAN_TOKEN, update.message.chat.id, update.message, '/businfo')
-        msg = 'Tell me the bus no in this format ah. \n\n'
-        msg += '*Format* : \n- /businfo <bus no>\n\n'
+        msg = (
+            'Tell me the bus no in this format ah. \n\n'
+            + '*Format* : \n- /businfo <bus no>\n\n'
+        )
+
+
         msg += '*Example* : \n- /businfo 50 \n- /businfo 163'
-        bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
+
+    bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
 
 def mrt_map(bot, update):
     """message send for Command: mrtmap"""
     botan.track(BOTAN_TOKEN, update.message.chat.id, update.message, '/mrtmap')
-    msg = '*MRT map*\n\n'
-    msg += 'Click [here](https://goo.gl/xqRlx7)'
+    msg = '*MRT map*\n\n' + 'Click [here](https://goo.gl/xqRlx7)'
+
     bot.send_message(chat_id=update.message.chat.id, text=msg, parse_mode='Markdown')
 
 def emoji_meaning(bot, update):
@@ -128,7 +133,7 @@ def close_command(bot, update):
 def inlinequery(bot, update):
     """Inline query message handling"""
     query = str(update.inline_query.query).lower()
-    results = list()  
+    results = []
     bus = Bus()
     with open('data/busstop.json') as json_data:
         bus_stop_list = json.load(json_data)
@@ -238,13 +243,12 @@ def handle_error(bot, update, error):
 
 
 def bus_arrival_markup(data_msg):
-        """Inline Keyboard Markup for busstop command"""
-        button_list = [
-            [InlineKeyboardButton("Refresh", callback_data='refresh '+ data_msg),
-            InlineKeyboardButton("Street View", callback_data='streetview '+ data_msg)],
-        ]
-        reply_markup = InlineKeyboardMarkup(button_list)
-        return reply_markup
+    """Inline Keyboard Markup for busstop command"""
+    button_list = [
+        [InlineKeyboardButton("Refresh", callback_data='refresh '+ data_msg),
+        InlineKeyboardButton("Street View", callback_data='streetview '+ data_msg)],
+    ]
+    return InlineKeyboardMarkup(button_list)
 
 def bus_arrival_inline_markup(bus_no):
     """Inline Keyboard Markup for inline command"""
@@ -252,8 +256,7 @@ def bus_arrival_inline_markup(bus_no):
         [InlineKeyboardButton("Refresh", callback_data='inline-mode-refresh '
         + bus_no)]
     ]
-    reply_markup = InlineKeyboardMarkup(button_list)
-    return reply_markup
+    return InlineKeyboardMarkup(button_list)
 
 
 def main():
